@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    
+    <p class="greet">The Night Our Stars Aligned</p>
+    <div class="stars-container">
+      <canvas id="myCanvas" class="stars"  width="300"  height="300"></canvas>
+    </div>
+    <div class="loc-cont"></div>
+    <div class="loc">STARS ABOVE ORMOC AND CEBU,PHILIPPINES</div>
+    <div class="loc">ON SEPTEMBER 23,2020 AT 12:18AM</div>
+    <div class="qt">In space there are countless constellations, suns and planets; 
+      we see only the suns because they give light; the planets remain invisible, 
+      for they are small and dark. There are also numberless earths circling around their suns.<span class="ikaw"> Pero mundo koy naging ikaw</span></div>
+      <div class="qt">
+        Happy Monthsary mylab , its been half a year the days pass so fast,
+        but still i love you the more than the way I love you from the start
+        sorry if sometimes I may hurt your feelings, but one thing I could say 
+        I already made up my mind you are the girl that I will love until the last. 
+      </div>
+    </div>
+  <script>
+   
+  function line(particle, particle2) {
+    context.beginPath();
+    context.moveTo(particle.x, particle.y);
+    context.lineTo(particle2.x, particle2.y);
+    context.stroke();
+  }
+   
+  function animate() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < maxParticles; i++) {
+      let particle = particles[i];
+      context.fillRect(particle.x - particleSize / 2, particle.y - particleSize / 2, particleSize, particleSize);
+      for (let j = 0; j < maxParticles; j++) {
+        if (i != j) {
+          let particle2 = particles[j];
+          let distanceX = Math.abs(particle.x - particle2.x);
+          let distanceY = Math.abs(particle.y - particle2.y);
+          if (distanceX < threshold && distanceY < threshold) {
+            context.lineWidth = ((threshold * 3) - (distanceX + distanceY)) / 50;
+            let color = 200 - Math.floor(distanceX + distanceY);
+            context.strokeStyle = 'rgb(' + color + ',' + color + ',' + color + ')';
+            line(particle, particle2);
+          }
+        }
+      }
+      particle.x = particle.x + particle.vx;
+      particle.y = particle.y + particle.vy;
+      if (particle.x > canvas.width - particleSize || particle.x < particleSize)
+        particle.vx = -particle.vx;
+      if (particle.y > canvas.height - particleSize || particle.y < particleSize)
+        particle.vy = -particle.vy;
+    }
+    window.requestAnimationFrame(animate);
+  }
+   
+  let canvas = document.getElementById('myCanvas');
+  let context = canvas.getContext('2d');
+  let particles = [];
+  let particleSize = 2;
+  let maxParticles =80;
+  let threshold = 20;
+  for (let i = 0; i < maxParticles; i++) {
+    let particle = {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: Math.random(),
+      vy: Math.random()
+    }
+    particles.push(particle);
+  }
+  context.fillStyle = 'white';
+  animate();
+   
+  </script>
+  </body>
+  </html>
